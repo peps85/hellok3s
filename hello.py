@@ -1,7 +1,15 @@
 import time
+from pymongo import MongoClient
 
-i =0
+# Connessione a MongoDB
+client = MongoClient("mongodb://mongo:27017/")
+db = client["metrics"]
+collection = db["hello_world"]
+
+i = 0
 while True:
-    print("Hello World")
+    metric = {"message": f"Hello World {i}", "timestamp": time.time()}
+    collection.insert_one(metric)  # Scrive la metrica in MongoDB
+    print(f"Inserted: {metric}", flush=True)
     time.sleep(1)
-    i=i+1
+    i += 1
